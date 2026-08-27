@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1',
+  // Strip any trailing dots/slashes so a misconfigured VITE_API_URL
+  // (e.g. ".../api/v1.") can never produce 404s on every request.
+  baseURL: (import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1').replace(/[.\/]+$/, ''),
   timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
