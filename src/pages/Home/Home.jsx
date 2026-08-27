@@ -21,7 +21,9 @@ const Home = () => {
 
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => categoryService.getCategories().then(res => res.data.data)
+    queryFn: () => categoryService.getCategories().then(res => res.data.data),
+    retry: 2,
+    staleTime: 30000
   })
 
   const { data: featuredProducts } = useQuery({
