@@ -2,6 +2,9 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
+  "env": {
+    "VITE_API_URL": "https://wfclothings-server.onrender.com/api/v1"
+  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
