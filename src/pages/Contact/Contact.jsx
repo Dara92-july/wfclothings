@@ -6,7 +6,7 @@ const Contact = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="max-w-3xl mx-auto text-center mb-12">
-        <h1 className="font-display text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tighter mb-4">GET IN TOUCH</h1>
+        <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tighter mb-4">GET IN TOUCH</h1>
         <div className="w-16 h-1 bg-primary-500 mx-auto mb-6 rounded-full" />
         <p className="text-lg text-slate-500 leading-relaxed">Have a question about an order, product, size, or delivery? We&rsquo;re here to help.</p>
       </div>
@@ -44,7 +44,7 @@ const Contact = () => {
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-10">
           {[
             { icon: Mail, label: 'Email', value: CONTACT_EMAIL },
             { icon: Phone, label: 'Phone', value: CONTACT_PHONE },

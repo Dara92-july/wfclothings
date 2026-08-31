@@ -41,7 +41,7 @@ const Footer = () => {
           <div>
             <h3 className="text-xs text-primary-800 uppercase tracking-widest font-semibold mb-4">Contact</h3>
             <ul className="space-y-2.5">
-              <li className="flex items-center gap-2 text-sm text-gray-500"><Mail className="w-4 h-4 text-gray-400 shrink-0" /> wayforward19940@gmail.com</li>
+              <li className="flex items-center gap-2 text-sm text-gray-500 min-w-0"><Mail className="w-4 h-4 text-gray-400 shrink-0" /> <span className="break-all">wayforward19940@gmail.com</span></li>
               <li className="flex items-center gap-2 text-sm text-gray-500"><Phone className="w-4 h-4 text-gray-400 shrink-0" /> +234 903 833 2574</li>
               <li className="flex items-start gap-2 text-sm text-gray-500"><MapPin className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" /> Lagos, Nigeria</li>
               <li>

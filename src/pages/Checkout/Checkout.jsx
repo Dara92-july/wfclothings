@@ -95,7 +95,7 @@ const Checkout = () => {
             </div>
             <div className="space-y-4">
               <div><label className="block text-sm font-medium text-slate-700 mb-1.5">Street Address</label><input type="text" value={formData.street} onChange={(e) => setFormData({ ...formData, street: e.target.value })} className="input-field" placeholder="123 Main Street" required /></div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div><label className="block text-sm font-medium text-slate-700 mb-1.5">City</label><input type="text" value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} className="input-field" placeholder="Lagos" required /></div>
                 <div><label className="block text-sm font-medium text-slate-700 mb-1.5">State</label><input type="text" value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })} className="input-field" placeholder="Lagos State" required /></div>
               </div>
@@ -124,7 +124,7 @@ const Checkout = () => {
             <div className="space-y-3">
               {items.map((item) => (
                 <div key={`${item.product}-${item.size}`} className="flex gap-3 p-2.5 bg-slate-50 rounded-lg">
-                  <img src={item.image} alt={item.name} className="w-14 h-14 object-cover rounded-lg" />
+                  <img src={item.image} alt={item.name} className="w-14 h-14 object-cover rounded-lg shrink-0" />
                   <div className="grow min-w-0"><p className="text-sm font-medium text-slate-800 truncate">{item.name}</p><p className="text-xs text-slate-500">Size: {item.size} &times; {item.quantity}</p><p className="text-sm font-bold text-primary-500 mt-0.5">{formatPrice(item.price * item.quantity)}</p></div>
                 </div>
               ))}

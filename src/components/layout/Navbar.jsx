@@ -50,7 +50,7 @@ const Navbar = () => {
           <div className="flex justify-between h-16 sm:h-20 items-center">
             {/* Left - Logo */}
             <div className="shrink-0">
-              <BrandLogo imageClassName="h-16 sm:h-20 w-auto" />
+              <BrandLogo imageClassName="h-10 sm:h-16 md:h-20 w-auto" />
             </div>
 
             {/* Center - Navigation Links (Desktop) */}

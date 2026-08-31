@@ -54,12 +54,21 @@ const Home = () => {
       {/* ====== HERO BANNER ====== */}
       <section className="relative h-[55vh] sm:h-[65vh] lg:h-[70vh] min-h-95 sm:min-h-115 overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_1920/v1784644210/hero_e2kncs.png"
-            alt="Way Forward collection"
-            className="w-full h-full object-cover object-[center_30%]"
-          />
-          <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/30 to-transparent" />
+          <picture>
+            <source
+              media="(max-width: 640px)"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_600,h_800/v1784644210/hero_e2kncs.png"
+            />
+            <img
+              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_1920/v1784644210/hero_e2kncs.png"
+              alt="Way Forward collection"
+              className="w-full h-full object-cover object-[center_30%] sm:object-[center_30%] object-center"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+            />
+          </picture>
+          <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/30 to-transparent sm:from-black/60 sm:via-black/30 sm:to-transparent from-black/50 via-black/20 to-black/10" />
         </div>
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
           <div className="max-w-lg">
