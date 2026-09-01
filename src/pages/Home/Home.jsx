@@ -62,15 +62,15 @@ const Home = () => {
             <img
               src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_1920/v1784644210/hero_e2kncs.png"
               alt="Way Forward collection"
-              className="w-full h-full object-cover object-center sm:object-[center_30%]"
+              className="w-full h-full object-cover object-[55%_center] sm:object-[center_30%]"
               loading="eager"
               decoding="async"
               fetchPriority="high"
             />
           </picture>
-          <div className="absolute inset-0 bg-linear-to-t from-black/55 via-black/20 to-black/5 sm:bg-linear-to-r sm:from-black/60 sm:via-black/30 sm:to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10 sm:bg-linear-to-r sm:from-black/60 sm:via-black/30 sm:to-transparent" />
         </div>
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end sm:items-center pb-8 sm:pb-0">
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end sm:items-center pb-10 sm:pb-0">
           <div className="max-w-lg w-full">
             <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md text-white rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium mb-3 sm:mb-5 border border-white/20">
               <span className="w-1.5 h-1.5 rounded-full bg-white" /> Made in Lagos <span className="text-white/60">🇳🇬</span>
@@ -82,14 +82,14 @@ const Home = () => {
               WAY FORWARD
             </h1>
             <p className="text-base sm:text-xl text-white/90 font-medium mb-1 sm:mb-2">Streetwear for the fearless.</p>
-            <p className="text-xs sm:text-base text-white/60 sm:text-white/50 mb-5 sm:mb-8 max-w-[280px] sm:max-w-md leading-relaxed">
+            <p className="text-xs sm:text-base text-white/70 sm:text-white/50 mb-5 sm:mb-8 max-w-[280px] sm:max-w-md leading-relaxed">
               &ldquo;Wear the mindset. No backward steps. Only forward moves.&rdquo;
             </p>
-            <div className="flex flex-wrap gap-2.5 sm:gap-3">
-              <Link to="/products" className="inline-flex items-center gap-1.5 sm:gap-2 bg-primary-500 text-white font-bold px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+              <Link to="/products" className="inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-primary-500 text-white font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25 w-full sm:w-auto">
                 Shop Collection <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Link>
-              <Link to="/products?sort=-createdAt" className="inline-flex items-center gap-1.5 sm:gap-2 border-2 border-white/90 sm:border-white text-white font-semibold px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-full text-xs sm:text-sm hover:bg-white hover:text-slate-900 transition-all">
+              <Link to="/products?sort=-createdAt" className="inline-flex items-center justify-center gap-1.5 sm:gap-2 border-2 border-white/90 sm:border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-sm hover:bg-white hover:text-slate-900 transition-all w-full sm:w-auto">
                 Explore New Arrivals
               </Link>
             </div>
