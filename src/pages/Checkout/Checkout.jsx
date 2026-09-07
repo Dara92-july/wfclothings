@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { MapPin, CreditCard, Truck, ArrowRight, Package, Lock, User, LogIn } from 'lucide-react'
+import { MapPin, CreditCard, ArrowRight, Package, Lock, User, LogIn } from 'lucide-react'
 import toast from 'react-hot-toast'
 import orderService from '../../services/order.service'
 import paymentService from '../../services/payment.service'
@@ -20,8 +20,7 @@ const Checkout = () => {
   const [loading, setLoading] = useState(false)
 
   const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-  const deliveryFee = subtotal > 500000 ? 0 : 250000
-  const total = subtotal + deliveryFee
+  const total = subtotal
 
   const formatPrice = (price) => `₦${(price / 100).toLocaleString()}`
 
@@ -130,14 +129,11 @@ const Checkout = () => {
               ))}
             </div>
             <div className="border-t border-slate-200 mt-4 pt-4 space-y-2">
-              <div className="flex justify-between text-sm"><span className="text-slate-500">Subtotal</span><span className="font-medium">{formatPrice(subtotal)}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-slate-500">Delivery</span><span className={deliveryFee === 0 ? 'text-emerald-600 font-medium' : ''}>{deliveryFee === 0 ? 'FREE' : formatPrice(deliveryFee)}</span></div>
               <div className="flex justify-between font-bold text-lg pt-2 border-t border-slate-200"><span className="text-slate-900">Total</span><span className="text-primary-500">{formatPrice(total)}</span></div>
             </div>
             <button onClick={handleCreateOrder} disabled={loading} className="w-full btn-primary mt-6 flex items-center justify-center gap-2">
               {loading ? <span className="flex items-center gap-2"><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing...</span> : <>Pay {formatPrice(total)} <ArrowRight className="w-5 h-5" /></>}
             </button>
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-3 justify-center"><Truck className="w-3.5 h-3.5" /> Free delivery on orders over &#x20A6;5,000</div>
           </div>
         </div>
       </div>

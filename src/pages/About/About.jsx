@@ -29,7 +29,7 @@ const About = () => {
           <div className="grid grid-cols-2 gap-6">
             {[
               { icon: Shield, title: 'Quality First', desc: 'Premium materials built to last' },
-              { icon: Truck, title: 'Free Delivery', desc: 'On orders over ₦50,000' },
+              { icon: Truck, title: 'Fast Delivery', desc: 'Delivery arranged directly' },
               { icon: RefreshCw, title: 'Easy Returns', desc: '7-day return policy' },
               { icon: ArrowRight, title: 'Forward Thinking', desc: 'Designs that push boundaries' },
             ].map(item => (
