@@ -82,12 +82,6 @@ const Home = () => {
             <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md text-white rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium mb-3 sm:mb-5 border border-white/20">
               <span className="w-1.5 h-1.5 rounded-full bg-white" /> Made in Lagos <span className="text-white/60">🇳🇬</span>
             </div>
-            <h1
-              className="text-white leading-none mb-2 sm:mb-4 tracking-tighter sm:tracking-[-2px]"
-              style={{ fontSize: 'clamp(32px, 9vw, 72px)', fontWeight: 900 }}
-            >
-              WAY FORWARD
-            </h1>
             <p className="text-base sm:text-xl text-white/90 font-medium mb-5 sm:mb-8">Streetwear for the fearless.</p>
             <div className="flex">
               <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-primary-500 text-white font-bold px-8 py-3.5 rounded-full text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
