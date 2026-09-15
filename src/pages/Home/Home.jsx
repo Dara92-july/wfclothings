@@ -56,7 +56,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-black">
           {/* blurred fill behind to avoid empty side gaps on desktop */}
           <img
-            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105"
@@ -64,10 +64,10 @@ const Home = () => {
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             />
             <img
-              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
               alt="Way Forward collection"
               className="relative w-full h-full object-contain object-center"
               loading="eager"
@@ -88,16 +88,10 @@ const Home = () => {
             >
               WAY FORWARD
             </h1>
-            <p className="text-base sm:text-xl text-white/90 font-medium mb-1 sm:mb-2">Streetwear for the fearless.</p>
-            <p className="text-xs sm:text-base text-white/70 sm:text-white/50 mb-5 sm:mb-8 max-w-[280px] sm:max-w-md leading-relaxed">
-              &ldquo;Wear the mindset. No backward steps. Only forward moves.&rdquo;
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
-              <Link to="/products" className="inline-flex items-center justify-center gap-1.5 sm:gap-2 bg-primary-500 text-white font-bold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25 w-full sm:w-auto">
-                Shop Collection <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              </Link>
-              <Link to="/products?sort=-createdAt" className="inline-flex items-center justify-center gap-1.5 sm:gap-2 border-2 border-white/90 sm:border-white text-white font-semibold px-6 sm:px-8 py-3 sm:py-3.5 rounded-full text-sm sm:text-sm hover:bg-white hover:text-slate-900 transition-all w-full sm:w-auto">
-                Explore New Arrivals
+            <p className="text-base sm:text-xl text-white/90 font-medium mb-5 sm:mb-8">Streetwear for the fearless.</p>
+            <div className="flex">
+              <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-primary-500 text-white font-bold px-8 py-3.5 rounded-full text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
+                Shop Collection <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
