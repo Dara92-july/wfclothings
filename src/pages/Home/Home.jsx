@@ -52,7 +52,7 @@ const Home = () => {
   return (
     <div>
       {/* ====== HERO BANNER ====== */}
-      <section className="relative h-[68vh] sm:h-[75vh] lg:h-[88vh] min-h-[520px] sm:min-h-[560px] overflow-hidden bg-black">
+      <section className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden bg-black">
         <div className="absolute inset-0 bg-black">
           {/* blurred fill behind to avoid empty side gaps on desktop */}
           <img
@@ -77,9 +77,9 @@ const Home = () => {
           </picture>
           <div className="absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent sm:bg-linear-to-r sm:from-black/10 sm:via-transparent sm:to-transparent" />
         </div>
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-end sm:justify-end pb-6 sm:pb-8">
-          <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-6 py-2.5 sm:px-7 sm:py-3 rounded-full text-xs sm:text-sm tracking-wide hover:bg-white transition-all shadow-xl">
-            SHOP THE COLLECTION <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-center pb-8 sm:pb-10">
+          <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-7 py-3 sm:px-8 sm:py-3.5 rounded-full text-sm tracking-wide hover:bg-white transition-all shadow-xl">
+            SHOP THE COLLECTION <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </section>
