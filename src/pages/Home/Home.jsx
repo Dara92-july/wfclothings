@@ -57,10 +57,10 @@ const Home = () => {
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_600,h_800/v1784644210/hero_e2kncs.png"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_600,h_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             />
             <img
-              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_1920/v1784644210/hero_e2kncs.png"
+              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_auto,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
               alt="Way Forward collection"
               className="w-full h-full object-cover object-[55%_center] sm:object-[center_30%]"
               loading="eager"
