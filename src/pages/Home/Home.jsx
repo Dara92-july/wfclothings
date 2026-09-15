@@ -52,17 +52,17 @@ const Home = () => {
   return (
     <div>
       {/* ====== HERO BANNER ====== */}
-      <section className="relative h-[50vh] sm:h-[65vh] lg:h-[70vh] min-h-[420px] sm:min-h-115 overflow-hidden">
-        <div className="absolute inset-0">
+      <section className="relative h-[50vh] sm:h-[65vh] lg:h-[70vh] min-h-[420px] sm:min-h-115 overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-black">
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_center,w_600,h_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fit,w_600,h_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             />
             <img
-              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,c_fill,g_center,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto/c_limit,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
               alt="Way Forward collection"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-contain object-center bg-black"
               loading="eager"
               decoding="async"
               fetchPriority="high"
