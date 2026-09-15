@@ -52,17 +52,24 @@ const Home = () => {
   return (
     <div>
       {/* ====== HERO BANNER ====== */}
-      <section className="relative h-[50vh] sm:h-[65vh] lg:h-[70vh] min-h-[420px] sm:min-h-115 overflow-hidden bg-black">
+      <section className="relative h-[68vh] sm:h-[75vh] lg:h-[88vh] min-h-[520px] sm:min-h-[560px] overflow-hidden bg-black">
         <div className="absolute inset-0 bg-black">
+          {/* blurred fill behind to avoid empty side gaps on desktop */}
+          <img
+            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105"
+          />
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_600/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             />
             <img
               src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
               alt="Way Forward collection"
-              className="w-full h-full object-contain object-center bg-black"
+              className="relative w-full h-full object-contain object-center"
               loading="eager"
               decoding="async"
               fetchPriority="high"
