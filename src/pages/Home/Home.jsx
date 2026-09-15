@@ -56,7 +56,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-black">
           {/* blurred fill behind to avoid empty side gaps on desktop */}
           <img
-            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             alt=""
             aria-hidden="true"
             className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105"
@@ -64,10 +64,10 @@ const Home = () => {
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
             />
             <img
-              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/e_gen_remove:prompt_big%20WF%20logo%20text/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
+              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
               alt="Way Forward collection"
               className="relative w-full h-full object-contain object-center"
               loading="eager"
