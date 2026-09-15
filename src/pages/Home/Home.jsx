@@ -75,25 +75,12 @@ const Home = () => {
               fetchPriority="high"
             />
           </picture>
-          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10 sm:bg-linear-to-r sm:from-black/60 sm:via-black/30 sm:to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent sm:bg-linear-to-r sm:from-black/10 sm:via-transparent sm:to-transparent" />
         </div>
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end sm:items-center pb-10 sm:pb-0">
-          <div className="max-w-xl w-full">
-            <div className="inline-flex items-center bg-white/10 backdrop-blur-md text-white rounded-full px-2.5 py-0.5 text-[9px] sm:text-xs font-semibold tracking-[0.14em] uppercase border border-white/20 mb-2 sm:mb-5">
-              Made in Lagos, Nigeria
-            </div>
-            <h1 className="text-white font-black leading-[0.9] tracking-tighter mb-2 sm:mb-4" style={{ fontSize: 'clamp(22px, 6vw, 56px)', fontWeight: 900 }}>
-              STREETWEAR FOR
-              <br />
-              THE FEARLESS.
-            </h1>
-            <p className="text-xs sm:text-base text-white/70 font-light tracking-wide leading-relaxed mb-4 sm:mb-8 max-w-sm sm:max-w-md">
-              Built for those who move forward.
-            </p>
-            <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-6 py-2.5 sm:px-8 sm:py-3.5 rounded-full text-xs sm:text-sm tracking-wide hover:bg-white transition-all shadow-xl hover:shadow-white/20">
-              SHOP THE COLLECTION <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </Link>
-          </div>
+        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-end sm:justify-end pb-6 sm:pb-8">
+          <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-6 py-2.5 sm:px-7 sm:py-3 rounded-full text-xs sm:text-sm tracking-wide hover:bg-white transition-all shadow-xl">
+            SHOP THE COLLECTION <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          </Link>
         </div>
       </section>
 
