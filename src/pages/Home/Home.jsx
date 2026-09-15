@@ -87,8 +87,11 @@ const Home = () => {
               <br />
               THE FEARLESS.
             </h1>
-            <p className="text-sm sm:text-base text-white/65 font-light tracking-wide mb-6 sm:mb-8 max-w-md">Dream. Plan. Move Forward.</p>
-            <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-primary-500 text-white font-bold px-8 py-3.5 rounded-full text-sm tracking-wide hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
+            <p className="text-sm sm:text-base text-white/75 font-light tracking-wide leading-relaxed mb-6 sm:mb-8 max-w-md">
+              Built for those who
+              <br className="sm:hidden" /> move forward.
+            </p>
+            <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-8 py-3.5 rounded-full text-sm tracking-wide hover:bg-white transition-all shadow-xl hover:shadow-white/20">
               SHOP THE COLLECTION <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
