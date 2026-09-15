@@ -78,16 +78,19 @@ const Home = () => {
           <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10 sm:bg-linear-to-r sm:from-black/60 sm:via-black/30 sm:to-transparent" />
         </div>
         <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end sm:items-center pb-10 sm:pb-0">
-          <div className="max-w-lg w-full">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-md text-white rounded-full px-3 sm:px-4 py-1 sm:py-1.5 text-xs sm:text-sm font-medium mb-3 sm:mb-5 border border-white/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" /> Made in Lagos <span className="text-white/60">🇳🇬</span>
+          <div className="max-w-xl w-full">
+            <div className="inline-flex items-center bg-white/10 backdrop-blur-md text-white rounded-full px-3 py-1 text-[10px] sm:text-xs font-semibold tracking-[0.14em] uppercase border border-white/20 mb-4 sm:mb-5">
+              Made in Lagos, Nigeria
             </div>
-            <p className="text-base sm:text-xl text-white/90 font-medium mb-5 sm:mb-8">Streetwear for the fearless.</p>
-            <div className="flex">
-              <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-primary-500 text-white font-bold px-8 py-3.5 rounded-full text-sm hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
-                Shop Collection <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+            <h1 className="text-white font-black leading-[0.9] tracking-tighter mb-3 sm:mb-4" style={{ fontSize: 'clamp(30px, 7vw, 56px)', fontWeight: 900 }}>
+              STREETWEAR FOR
+              <br />
+              THE FEARLESS.
+            </h1>
+            <p className="text-sm sm:text-base text-white/65 font-light tracking-wide mb-6 sm:mb-8 max-w-md">Dream. Plan. Move Forward.</p>
+            <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-primary-500 text-white font-bold px-8 py-3.5 rounded-full text-sm tracking-wide hover:bg-primary-600 transition-all shadow-xl hover:shadow-primary-500/25">
+              SHOP THE COLLECTION <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
