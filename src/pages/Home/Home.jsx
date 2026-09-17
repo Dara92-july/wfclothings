@@ -51,14 +51,14 @@ const Home = () => {
 
   return (
     <div>
-      {/* ====== HERO BANNER ====== */}
+      
       {/* ====== HERO BANNER ====== */}
     <section className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden bg-black">
       <picture className="block w-full h-full">
       {/* Mobile */}
       <source
       media="(max-width: 640px)"
-      srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789655848/hero_small_nrcha0.jpg"
+      srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/v1789658271/Gemini_Generated_Image_h782krh782krh782_zrzbnm.jpg"
       />
 
     {/* Desktop / Tablet */}
