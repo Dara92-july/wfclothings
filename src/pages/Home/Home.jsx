@@ -52,39 +52,26 @@ const Home = () => {
   return (
     <div>
       {/* ====== HERO BANNER ====== */}
-      <section className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden bg-black">
-        <div className="absolute inset-0 bg-black">
-          {/* blurred fill behind to avoid empty side gaps on desktop */}
-          <img
-            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920,e_blur:800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-50 scale-105"
-          />
-          <picture>
-            <source
-              media="(max-width: 640px)"
-              srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
-            />
-            <img
-              src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789476861/WhatsApp_Image_2026-09-14_at_15.23.48_ommmtb.jpg"
-              alt="Way Forward collection"
-              className="relative w-full h-full object-contain object-center"
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-            />
-          </picture>
-          <div className="absolute inset-0 bg-linear-to-t from-black/15 via-transparent to-transparent sm:bg-linear-to-r sm:from-black/10 sm:via-transparent sm:to-transparent" />
-        </div>
-        <div className="relative h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end justify-center pb-8 sm:pb-10">
-          <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-[#FDFBF7] text-slate-900 font-bold px-7 py-3 sm:px-8 sm:py-3.5 rounded-full text-sm tracking-wide hover:bg-white transition-all shadow-xl">
-            SHOP THE COLLECTION <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
+      {/* ====== HERO BANNER ====== */}
+    <section className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden bg-black">
+      <picture className="block w-full h-full">
+      {/* Mobile */}
+      <source
+      media="(max-width: 640px)"
+      srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_800/v1789655848/hero_small_nrcha0.jpg"
+      />
 
-      {/* ====== CATEGORY NAVIGATION ====== */}
+    {/* Desktop / Tablet */}
+      <img
+      src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789655838/hero_big_ko4pwm.jpg"
+      alt="Way Forward"
+      className="w-full h-full object-cover object-center"
+      loading="eager"
+      decoding="async"
+      fetchPriority="high"
+      />
+    </picture>
+    </section>      {/* ====== CATEGORY NAVIGATION ====== */}
       <section className="sticky top-16 sm:top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
