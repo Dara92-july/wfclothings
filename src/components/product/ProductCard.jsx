@@ -1,15 +1,112 @@
 import { Link } from 'react-router-dom'
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { ShoppingCart, Star } from 'lucide-react'
+import { ShoppingCart, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { addToCart } from '../../store/slices/cartSlice'
 import toast from 'react-hot-toast'
+
+const SWIPE_THRESHOLD = 40
+
+const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onImageError }) => {
+  const touchStartX = useRef(0)
+  const swipeDistance = useRef(0)
+  const didSwipe = useRef(false)
+
+  const total = images.length
+  const goTo = (index) => onChange(((index % total) + total) % total)
+
+  const handleTouchStart = (event) => {
+    touchStartX.current = event.touches[0].clientX
+    swipeDistance.current = 0
+    didSwipe.current = false
+  }
+
+  const handleTouchMove = (event) => {
+    swipeDistance.current = event.touches[0].clientX - touchStartX.current
+  }
+
+  const handleTouchEnd = () => {
+    if (Math.abs(swipeDistance.current) < SWIPE_THRESHOLD) return
+    didSwipe.current = true
+    goTo(activeIndex + (swipeDistance.current < 0 ? 1 : -1))
+  }
+
+  // Keep taps on the controls from following the surrounding product <Link>
+  const handleControlClick = (event, index) => {
+    event.preventDefault()
+    event.stopPropagation()
+    goTo(index)
+  }
+
+  return (
+    <div
+      className="absolute inset-0"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onClickCapture={(event) => {
+        if (!didSwipe.current) return
+        didSwipe.current = false
+        event.preventDefault()
+        event.stopPropagation()
+      }}
+    >
+      {images.map((src, index) => (
+        <img
+          key={`${src}-${index}`}
+          src={src}
+          alt={index === 0 ? productName : `${productName} - view ${index + 1}`}
+          loading={index === 0 ? 'eager' : 'lazy'}
+          onError={onImageError}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+            index === activeIndex ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+      ))}
+
+      {total > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={(event) => handleControlClick(event, activeIndex - 1)}
+            aria-label="Previous image"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/85 text-slate-700 shadow-sm backdrop-blur-sm opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 hover:bg-white transition-opacity duration-200"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={(event) => handleControlClick(event, activeIndex + 1)}
+            aria-label="Next image"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/85 text-slate-700 shadow-sm backdrop-blur-sm opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 hover:bg-white transition-opacity duration-200"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5">
+            {images.map((src, index) => (
+              <button
+                key={`dot-${src}-${index}`}
+                type="button"
+                onClick={(event) => handleControlClick(event, index)}
+                aria-label={`Show image ${index + 1}`}
+                aria-current={index === activeIndex}
+                className={`h-1.5 rounded-full transition-all duration-200 ${
+                  index === activeIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/60 hover:bg-white/80'
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
 
 const ProductCard = ({ product }) => {
   const [imgError, setImgError] = useState(false)
   const [added, setAdded] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(0)
   const dispatch = useDispatch()
-  const [showCarousel, setShowCarousel] = useState(false)
 
   if (!product) return null
 
@@ -21,14 +118,13 @@ const ProductCard = ({ product }) => {
 
   const avgRating = product.ratings?.average || 0
   const ratingCount = product.ratings?.count || 0
-  const primaryImage = product.images?.[0]?.url || product.image || '/placeholder.png'
-  const secondaryImage = product.images?.[1]?.url
-  const hasTwoImages = !!secondaryImage
 
-  // Carousel state for 2-image products
-  const [activeIndex, setActiveIndex] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
-  const touchStartX = useRef(0)
+  // Accept both plain URL strings and Cloudinary-style { url } objects
+  const galleryImages = (product.images || [])
+    .map((image) => (typeof image === 'string' ? image : image?.url))
+    .filter(Boolean)
+  const images = galleryImages.length > 0 ? galleryImages : [product.image || '/placeholder.png']
+  const currentIndex = activeIndex < images.length ? activeIndex : 0
 
   const availableStock = Number(product.stockQuantity || 0) - Number(product.reservedQuantity || 0)
   const outOfStock = availableStock <= 0
@@ -48,32 +144,13 @@ const ProductCard = ({ product }) => {
         className="block relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-50 mb-3 ring-1 ring-inset ring-slate-200/50 group-hover:ring-primary-500/30 transition-all"
       >
         {!imgError ? (
-          <>
-            {hasTwoImages ? (
-              <ProductImageCarousel
-                primaryImage={primaryImage}
-                secondaryImage={secondaryImage}
-                activeIndex={activeIndex}
-                setActiveIndex={setActiveIndex}
-                setShowCarousel={setShowCarousel}
-              />
-            ) : (
-              <>
-                <img
-                  src={primaryImage}
-                  alt={product.name}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
-                  onError={() => setImgError(true)}
-                />
-                <img
-                  src={hoverImage}
-                  alt={`${product.name} - alternate view`}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-                  onError={() => setImgError(true)}
-                />
-              </>
-            )}
-          </>
+          <ProductImageCarousel
+            images={images}
+            activeIndex={currentIndex}
+            onChange={setActiveIndex}
+            productName={product.name}
+            onImageError={() => setImgError(true)}
+          />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-slate-300">
             <span className="text-4xl font-bold">WF</span>
@@ -104,7 +181,7 @@ const ProductCard = ({ product }) => {
           </div>
         )}
 
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
       </Link>
 
       <div className="px-0.5">
@@ -136,58 +213,6 @@ const ProductCard = ({ product }) => {
           <ShoppingCart className={`w-4 h-4 ${added ? 'animate-bounce' : ''}`} />
           {added ? 'Added!' : outOfStock ? 'Out of Stock' : 'Add to Cart'}
         </button>
-      </div>
-    </div>
-  )
-}
-
-const ProductImageCarousel = ({ primaryImage, secondaryImage, activeIndex, setActiveIndex, setShowCarousel }) => {
-  return (
-    <div
-      className="relative w-full h-full rounded-2xl overflow-hidden group-hover:opacity-100"
-      onMouseEnter={() => setShowCarousel(true)}
-      onMouseLeave={() => setTimeout(() => setShowCarousel(false), 300)}
-    >
-      <img
-        src={primaryImage}
-        alt="Product front view"
-        className="w-full h-full object-contain transition-opacity duration-300"
-        loading="eager"
-        fetchPriority="high"
-      />
-      {showCarousel && (
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <button
-            onClick={() => setActiveIndex((i) => (i + 1) % 2)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-opacity"
-            aria-label="View back"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setActiveIndex((i) => (i - 1 + 2) % 2)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-opacity"
-            aria-label="View front"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-      )}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-        <button
-          onClick={() => setActiveIndex(0)}
-          className="w-2 h-2 rounded-full bg-white/50 transition-all ${
-            activeIndex === 0 ? 'bg-white' : 'bg-white/20'
-          }"
-          aria-label="Front image"
-        />
-        <button
-          onClick={() => setActiveIndex(1)}
-          className="w-2 h-2 rounded-full bg-white/50 transition-all ${
-            activeIndex === 1 ? 'bg-white' : 'bg-white/20'
-          }"
-          aria-label="Back image"
-        />
       </div>
     </div>
   )
