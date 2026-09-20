@@ -9,6 +9,7 @@ const ProductCard = ({ product }) => {
   const [imgError, setImgError] = useState(false)
   const [added, setAdded] = useState(false)
   const dispatch = useDispatch()
+  const [showCarousel, setShowCarousel] = useState(false)
 
   if (!product) return null
 
@@ -21,7 +22,13 @@ const ProductCard = ({ product }) => {
   const avgRating = product.ratings?.average || 0
   const ratingCount = product.ratings?.count || 0
   const primaryImage = product.images?.[0]?.url || product.image || '/placeholder.png'
-  const hoverImage = product.images?.[1]?.url || primaryImage
+  const secondaryImage = product.images?.[1]?.url
+  const hasTwoImages = !!secondaryImage
+
+  // Carousel state for 2-image products
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const touchStartX = useRef(0)
 
   const availableStock = Number(product.stockQuantity || 0) - Number(product.reservedQuantity || 0)
   const outOfStock = availableStock <= 0
@@ -42,18 +49,30 @@ const ProductCard = ({ product }) => {
       >
         {!imgError ? (
           <>
-            <img
-              src={primaryImage}
-              alt={product.name}
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
-              onError={() => setImgError(true)}
-            />
-            <img
-              src={hoverImage}
-              alt={`${product.name} - alternate view`}
-              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
-              onError={() => setImgError(true)}
-            />
+            {hasTwoImages ? (
+              <ProductImageCarousel
+                primaryImage={primaryImage}
+                secondaryImage={secondaryImage}
+                activeIndex={activeIndex}
+                setActiveIndex={setActiveIndex}
+                setShowCarousel={setShowCarousel}
+              />
+            ) : (
+              <>
+                <img
+                  src={primaryImage}
+                  alt={product.name}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-0"
+                  onError={() => setImgError(true)}
+                />
+                <img
+                  src={hoverImage}
+                  alt={`${product.name} - alternate view`}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                  onError={() => setImgError(true)}
+                />
+              </>
+            )}
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-slate-300">
@@ -117,6 +136,58 @@ const ProductCard = ({ product }) => {
           <ShoppingCart className={`w-4 h-4 ${added ? 'animate-bounce' : ''}`} />
           {added ? 'Added!' : outOfStock ? 'Out of Stock' : 'Add to Cart'}
         </button>
+      </div>
+    </div>
+  )
+}
+
+const ProductImageCarousel = ({ primaryImage, secondaryImage, activeIndex, setActiveIndex, setShowCarousel }) => {
+  return (
+    <div
+      className="relative w-full h-full rounded-2xl overflow-hidden group-hover:opacity-100"
+      onMouseEnter={() => setShowCarousel(true)}
+      onMouseLeave={() => setTimeout(() => setShowCarousel(false), 300)}
+    >
+      <img
+        src={primaryImage}
+        alt="Product front view"
+        className="w-full h-full object-contain transition-opacity duration-300"
+        loading="eager"
+        fetchPriority="high"
+      />
+      {showCarousel && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <button
+            onClick={() => setActiveIndex((i) => (i + 1) % 2)}
+            className="absolute left-2 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-opacity"
+            aria-label="View back"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => setActiveIndex((i) => (i - 1 + 2) % 2)}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-opacity"
+            aria-label="View front"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
+        <button
+          onClick={() => setActiveIndex(0)}
+          className="w-2 h-2 rounded-full bg-white/50 transition-all ${
+            activeIndex === 0 ? 'bg-white' : 'bg-white/20'
+          }"
+          aria-label="Front image"
+        />
+        <button
+          onClick={() => setActiveIndex(1)}
+          className="w-2 h-2 rounded-full bg-white/50 transition-all ${
+            activeIndex === 1 ? 'bg-white' : 'bg-white/20'
+          }"
+          aria-label="Back image"
+        />
       </div>
     </div>
   )
