@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { ShoppingCart, Star } from 'lucide-react'
 import { addToCart } from '../../store/slices/cartSlice'
