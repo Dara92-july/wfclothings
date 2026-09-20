@@ -6,10 +6,9 @@ import { addToCart } from '../../store/slices/cartSlice'
 import toast from 'react-hot-toast'
 import { getSwipedIndex, wrapIndex } from './imageCarousel'
 
-const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onImageError }) => {
+const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onImageError, swipeRef }) => {
   const dragStartX = useRef(null)
   const swipeDistance = useRef(0)
-  const didSwipe = useRef(false)
 
   const total = images.length
   const canSwipe = total > 1
@@ -20,7 +19,8 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
     if (event.pointerType === 'mouse' && event.button !== 0) return
     dragStartX.current = event.clientX
     swipeDistance.current = 0
-    didSwipe.current = false
+    // Every gesture starts as a plain tap; only a completed swipe flags it
+    swipeRef.current = false
   }
 
   const handlePointerMove = (event) => {
@@ -34,7 +34,8 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
     dragStartX.current = null
     const nextIndex = getSwipedIndex(activeIndex, distance, total)
     if (nextIndex === activeIndex) return
-    didSwipe.current = true
+    // Tell ProductCard not to treat the click that follows this drag as a tap
+    swipeRef.current = true
     onChange(nextIndex)
   }
 
@@ -53,12 +54,6 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
       onPointerUp={endDrag}
       onPointerLeave={endDrag}
       onPointerCancel={endDrag}
-      onClickCapture={(event) => {
-        if (!didSwipe.current) return
-        didSwipe.current = false
-        event.preventDefault()
-        event.stopPropagation()
-      }}
     >
       {images.map((src, index) => (
         <img
@@ -116,6 +111,9 @@ const ProductCard = ({ product }) => {
   const [imgError, setImgError] = useState(false)
   const [added, setAdded] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
+  // Set by the carousel when a drag turns into a swipe, so the click that the
+  // browser fires straight afterwards does not also open the product page.
+  const swipeRef = useRef(false)
   const dispatch = useDispatch()
 
   if (!product) return null
@@ -151,6 +149,12 @@ const ProductCard = ({ product }) => {
     <div className="group relative">
       <Link
         to={`/products/${product.slug || product._id}`}
+        onClick={(event) => {
+          if (!swipeRef.current) return
+          swipeRef.current = false
+          event.preventDefault()
+          event.stopPropagation()
+        }}
         className="block relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-50 mb-3 ring-1 ring-inset ring-slate-200/50 group-hover:ring-primary-500/30 transition-all"
       >
         {!imgError ? (
@@ -160,6 +164,7 @@ const ProductCard = ({ product }) => {
             onChange={setActiveIndex}
             productName={product.name}
             onImageError={() => setImgError(true)}
+            swipeRef={swipeRef}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-slate-300">
