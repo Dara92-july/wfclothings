@@ -4,31 +4,38 @@ import { useDispatch } from 'react-redux'
 import { ShoppingCart, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 import { addToCart } from '../../store/slices/cartSlice'
 import toast from 'react-hot-toast'
-
-const SWIPE_THRESHOLD = 40
+import { getSwipedIndex, wrapIndex } from './imageCarousel'
 
 const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onImageError }) => {
-  const touchStartX = useRef(0)
+  const dragStartX = useRef(null)
   const swipeDistance = useRef(0)
   const didSwipe = useRef(false)
 
   const total = images.length
-  const goTo = (index) => onChange(((index % total) + total) % total)
+  const canSwipe = total > 1
+  const goTo = (index) => onChange(wrapIndex(index, total))
 
-  const handleTouchStart = (event) => {
-    touchStartX.current = event.touches[0].clientX
+  // Pointer events cover mouse drag, touch swipe and pen in one code path
+  const handlePointerDown = (event) => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return
+    dragStartX.current = event.clientX
     swipeDistance.current = 0
     didSwipe.current = false
   }
 
-  const handleTouchMove = (event) => {
-    swipeDistance.current = event.touches[0].clientX - touchStartX.current
+  const handlePointerMove = (event) => {
+    if (dragStartX.current === null) return
+    swipeDistance.current = event.clientX - dragStartX.current
   }
 
-  const handleTouchEnd = () => {
-    if (Math.abs(swipeDistance.current) < SWIPE_THRESHOLD) return
+  const endDrag = () => {
+    if (dragStartX.current === null) return
+    const distance = swipeDistance.current
+    dragStartX.current = null
+    const nextIndex = getSwipedIndex(activeIndex, distance, total)
+    if (nextIndex === activeIndex) return
     didSwipe.current = true
-    goTo(activeIndex + (swipeDistance.current < 0 ? 1 : -1))
+    onChange(nextIndex)
   }
 
   // Keep taps on the controls from following the surrounding product <Link>
@@ -40,10 +47,12 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
 
   return (
     <div
-      className="absolute inset-0"
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+      className={`absolute inset-0 touch-pan-y ${canSwipe ? 'cursor-grab active:cursor-grabbing' : ''}`}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={endDrag}
+      onPointerLeave={endDrag}
+      onPointerCancel={endDrag}
       onClickCapture={(event) => {
         if (!didSwipe.current) return
         didSwipe.current = false
@@ -57,6 +66,7 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
           src={src}
           alt={index === 0 ? productName : `${productName} - view ${index + 1}`}
           loading={index === 0 ? 'eager' : 'lazy'}
+          draggable={false}
           onError={onImageError}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
             index === activeIndex ? 'opacity-100' : 'opacity-0'
