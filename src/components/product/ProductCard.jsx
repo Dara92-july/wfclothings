@@ -60,7 +60,7 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
           key={`${src}-${index}`}
           src={src}
           alt={index === 0 ? productName : `${productName} - view ${index + 1}`}
-          loading={index === 0 ? 'eager' : 'lazy'}
+          loading={index < 2 ? 'eager' : 'lazy'}
           draggable={false}
           onError={onImageError}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
@@ -74,32 +74,24 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
           <button
             type="button"
             onClick={(event) => handleControlClick(event, activeIndex - 1)}
-            aria-label="Previous image"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/85 text-slate-700 shadow-sm backdrop-blur-sm opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 hover:bg-white transition-opacity duration-200"
+            aria-label="Show previous image"
+            className="absolute left-1.5 sm:left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/85 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white active:scale-95"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <button
             type="button"
             onClick={(event) => handleControlClick(event, activeIndex + 1)}
-            aria-label="Next image"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/85 text-slate-700 shadow-sm backdrop-blur-sm opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto focus-visible:opacity-100 hover:bg-white transition-opacity duration-200"
+            aria-label="Show next image"
+            className="absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/85 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white active:scale-95"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5">
-            {images.map((src, index) => (
-              <button
-                key={`dot-${src}-${index}`}
-                type="button"
-                onClick={(event) => handleControlClick(event, index)}
-                aria-label={`Show image ${index + 1}`}
-                aria-current={index === activeIndex}
-                className={`h-1.5 rounded-full transition-all duration-200 ${
-                  index === activeIndex ? 'w-4 bg-white' : 'w-1.5 bg-white/60 hover:bg-white/80'
-                }`}
-              />
-            ))}
+          <div
+            aria-hidden="true"
+            className="absolute top-3 right-3 z-10 rounded-full bg-slate-900/60 px-2 py-0.5 text-[10px] font-semibold leading-tight text-white backdrop-blur-sm"
+          >
+            {activeIndex + 1}/{total}
           </div>
         </>
       )}

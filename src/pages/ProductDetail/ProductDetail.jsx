@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
-import { Star, ShoppingCart, Minus, Plus, Truck, Shield, RefreshCw, ChevronLeft, X } from 'lucide-react'
+import { Star, ShoppingCart, Minus, Plus, Truck, Shield, RefreshCw, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import productService from '../../services/product.service'
 import { addToCart } from '../../store/slices/cartSlice'
 import ReviewSection from '../../components/review/ReviewSection'
 import ErrorState from '../../components/common/ErrorState'
+import { getSwipedIndex, wrapIndex } from '../../components/product/imageCarousel'
 import toast from 'react-hot-toast'
 
 const ProductDetail = () => {
@@ -17,6 +18,11 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedImage, setSelectedImage] = useState(0)
   const [showLightbox, setShowLightbox] = useState(false)
+  const dragStartX = useRef(null)
+  const swipeDistance = useRef(0)
+  // Set when a drag becomes a swipe, so the click that follows does not also
+  // open the lightbox.
+  const swipedRef = useRef(false)
 
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['product', slug],
@@ -69,6 +75,48 @@ const ProductDetail = () => {
   const availableStock = (product.stockQuantity || 0) - (product.reservedQuantity || 0)
   const outOfStock = availableStock <= 0
 
+  // Front/back gallery: front is the default and the shopper can swipe to the back
+  const images = product.images || []
+  const totalImages = images.length
+  const canSwipeImages = totalImages > 1
+  const currentImage = selectedImage < totalImages ? selectedImage : 0
+  const imageAt = (index) => images[index]?.url || images[index]
+
+  const goToImage = (index) => {
+    if (totalImages === 0) return
+    setSelectedImage(wrapIndex(index, totalImages))
+  }
+
+  const handleImagePointerDown = (event) => {
+    if (!canSwipeImages || (event.pointerType === 'mouse' && event.button !== 0)) return
+    dragStartX.current = event.clientX
+    swipeDistance.current = 0
+    swipedRef.current = false
+  }
+
+  const handleImagePointerMove = (event) => {
+    if (dragStartX.current === null) return
+    swipeDistance.current = event.clientX - dragStartX.current
+  }
+
+  const endImageDrag = () => {
+    if (dragStartX.current === null) return
+    const distance = swipeDistance.current
+    dragStartX.current = null
+    const nextIndex = getSwipedIndex(currentImage, distance, totalImages)
+    if (nextIndex === currentImage) return
+    swipedRef.current = true
+    setSelectedImage(nextIndex)
+  }
+
+  const handleImageClick = () => {
+    if (swipedRef.current) {
+      swipedRef.current = false
+      return
+    }
+    setShowLightbox(true)
+  }
+
   const handleAddToCart = () => {
     dispatch(addToCart({ product, quantity, size: selectedSizeValue }))
     toast.success('Added to cart!')
@@ -86,12 +134,59 @@ const ProductDetail = () => {
       </button>
       <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
         <div className="space-y-3">
-          <div className="aspect-square bg-slate-100 rounded-xl overflow-hidden cursor-zoom-in" onClick={() => setShowLightbox(true)}>
-            <img src={product.images?.[selectedImage]?.url || product.images?.[selectedImage]} alt={product.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+          <div
+            className={`relative aspect-square bg-slate-100 rounded-xl overflow-hidden ${
+              canSwipeImages ? 'touch-pan-y cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
+            }`}
+            onPointerDown={handleImagePointerDown}
+            onPointerMove={handleImagePointerMove}
+            onPointerUp={endImageDrag}
+            onPointerLeave={endImageDrag}
+            onPointerCancel={endImageDrag}
+            onClick={handleImageClick}
+          >
+            <img
+              src={imageAt(currentImage)}
+              alt={product.name}
+              draggable={false}
+              className="w-full h-full object-contain transition-transform duration-500 hover:scale-105"
+            />
+            {canSwipeImages && (
+              <>
+                <button
+                  type="button"
+                  aria-label="Show previous image"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    goToImage(currentImage - 1)
+                  }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/85 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white active:scale-95"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="Show next image"
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    goToImage(currentImage + 1)
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-10 h-10 rounded-full bg-white/85 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-105 hover:bg-white active:scale-95"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                <div
+                  aria-hidden="true"
+                  className="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 rounded-full bg-slate-900/60 px-2.5 py-0.5 text-[11px] font-semibold leading-tight text-white backdrop-blur-sm"
+                >
+                  {currentImage + 1}/{totalImages}
+                </div>
+              </>
+            )}
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1">
-            {product.images?.map((img, idx) => (
-                <button key={idx} onClick={() => setSelectedImage(idx)} className={`w-16 h-16 rounded-lg overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${selectedImage === idx ? 'border-primary-500' : 'border-transparent hover:border-slate-200'}`}>
+            {images.map((img, idx) => (
+                <button key={idx} type="button" onClick={() => setSelectedImage(idx)} aria-label={`Show image ${idx + 1}`} aria-current={currentImage === idx} className={`w-16 h-16 rounded-lg overflow-hidden shrink-0 border-2 bg-slate-100 transition-all cursor-pointer ${currentImage === idx ? 'border-primary-500' : 'border-transparent hover:border-slate-200'}`}>
                   <img src={img?.url || img} alt="" className="w-full h-full object-cover" />
                 </button>
             ))}
@@ -141,10 +236,39 @@ const ProductDetail = () => {
       <div className="max-w-4xl">
         <ReviewSection productId={product._id} initialReviews={product.reviews} />
       </div>
-      {showLightbox && product.images?.[selectedImage] && (
+      {showLightbox && images[currentImage] && (
         <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={() => setShowLightbox(false)}>
-          <button onClick={() => setShowLightbox(false)} className="absolute top-6 right-6 text-white/60 hover:text-white"><X className="w-8 h-8" /></button>
-          <img src={product.images[selectedImage]?.url || product.images[selectedImage]} alt="" className="max-w-full max-h-[90vh] object-contain rounded-xl" onClick={(e) => e.stopPropagation()} />
+          <button type="button" aria-label="Close" onClick={() => setShowLightbox(false)} className="absolute top-6 right-6 text-white/60 hover:text-white"><X className="w-8 h-8" /></button>
+          {canSwipeImages && (
+            <>
+              <button
+                type="button"
+                aria-label="Show previous image"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  goToImage(currentImage - 1)
+                }}
+                className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                type="button"
+                aria-label="Show next image"
+                onClick={(event) => {
+                  event.stopPropagation()
+                  goToImage(currentImage + 1)
+                }}
+                className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-11 h-11 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+              <div aria-hidden="true" className="absolute bottom-6 left-1/2 -translate-x-1/2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white">
+                {currentImage + 1}/{totalImages}
+              </div>
+            </>
+          )}
+          <img src={imageAt(currentImage)} alt={product.name} draggable={false} className="max-w-full max-h-[90vh] object-contain rounded-xl" onClick={(e) => e.stopPropagation()} />
         </div>
       )}
     </div>
