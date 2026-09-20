@@ -17,8 +17,7 @@ const ProductImageCarousel = ({
   activeIndex,
   onChange,
   productName,
-  onImageError,
-  onSwipe
+  onImageError
 }) => {
   const dragStartX = useRef(null)
   const currentX = useRef(null)
@@ -71,7 +70,6 @@ const ProductImageCarousel = ({
       return
     }
 
-    // Calculate distance before resetting the start position
     const distance =
       currentX.current - dragStartX.current
 
@@ -83,7 +81,6 @@ const ProductImageCarousel = ({
       )
 
       onChange(nextIndex)
-      onSwipe?.()
     }
 
     dragStartX.current = null
@@ -216,7 +213,6 @@ const ProductCard = ({ product }) => {
   const [added, setAdded] = useState(false)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const swipeRef = useRef(false)
   const dispatch = useDispatch()
 
   if (!product) return null
@@ -291,18 +287,8 @@ const ProductCard = ({ product }) => {
     <div className="group relative">
 
       {/* Product Image */}
-      <Link
-        to={`/products/${product.slug || product._id}`}
-        onClick={(event) => {
-          if (!swipeRef.current) return
+      <div className="relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-50 mb-3 ring-1 ring-inset ring-slate-200/50 group-hover:ring-primary-500/30 transition-all">
 
-          swipeRef.current = false
-
-          event.preventDefault()
-          event.stopPropagation()
-        }}
-        className="block relative aspect-3/4 rounded-2xl overflow-hidden bg-slate-50 mb-3 ring-1 ring-inset ring-slate-200/50 group-hover:ring-primary-500/30 transition-all"
-      >
         {!imgError ? (
           <ProductImageCarousel
             images={images}
@@ -310,9 +296,6 @@ const ProductCard = ({ product }) => {
             onChange={setActiveIndex}
             productName={product.name}
             onImageError={() => setImgError(true)}
-            onSwipe={() => {
-              swipeRef.current = true
-            }}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-slate-300">
@@ -321,6 +304,13 @@ const ProductCard = ({ product }) => {
             </span>
           </div>
         )}
+
+        {/* Clickable Image Area */}
+        <Link
+          to={`/products/${product.slug || product._id}`}
+          aria-label={`View ${product.name}`}
+          className="absolute inset-0 z-[5]"
+        />
 
         {/* Discount */}
         {hasDiscount && (
@@ -355,8 +345,9 @@ const ProductCard = ({ product }) => {
         )}
 
         {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
-      </Link>
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none z-[4]" />
+
+      </div>
 
       {/* Product Information */}
       <div className="px-0.5">
@@ -424,4 +415,3 @@ const ProductCard = ({ product }) => {
 }
 
 export default ProductCard
-
