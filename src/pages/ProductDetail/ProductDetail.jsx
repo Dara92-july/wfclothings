@@ -69,7 +69,7 @@ const ProductDetail = () => {
   const sizes = sizeAttribute?.values || ['M', 'L', 'XL', 'XXL']
   const selectedSizeValue = selectedSize || sizes[0]
   const effectivePrice = product.effectivePrice || product.price
-  const hasDiscount = product.discountPrice && product.price > product.discountPrice
+  const hasDiscount = product.discountPrice && product.price > product.price > product.discountPrice
   const discountPercent = hasDiscount ? Math.round(((product.price - product.discountPrice) / product.price) * 100) : 0
   const formatPrice = (price) => `₦${(price / 100).toLocaleString()}`
   const availableStock = (product.stockQuantity || 0) - (product.reservedQuantity || 0)
@@ -132,10 +132,10 @@ const ProductDetail = () => {
       <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-slate-500 hover:text-slate-700 mb-6 transition-colors">
         <ChevronLeft className="w-4 h-4" /> Back
       </button>
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-12">
         <div className="space-y-3">
           <div
-            className={`relative aspect-square bg-slate-100 rounded-xl overflow-hidden ${
+            className={`relative bg-slate-100 rounded-xl overflow-hidden ${
               canSwipeImages ? 'touch-pan-y cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
             }`}
             onPointerDown={handleImagePointerDown}
@@ -186,9 +186,9 @@ const ProductDetail = () => {
           </div>
           <div className="flex gap-2 overflow-x-auto pb-1">
             {images.map((img, idx) => (
-                <button key={idx} type="button" onClick={() => setSelectedImage(idx)} aria-label={`Show image ${idx + 1}`} aria-current={currentImage === idx} className={`w-16 h-16 rounded-lg overflow-hidden shrink-0 border-2 bg-slate-100 transition-all cursor-pointer ${currentImage === idx ? 'border-primary-500' : 'border-transparent hover:border-slate-200'}`}>
-                  <img src={img?.url || img} alt="" className="w-full h-full object-cover" />
-                </button>
+              <button key={idx} type="button" onClick={() => setSelectedImage(idx)} aria-label={`Show image ${idx + 1}`} aria-current={currentImage === idx} className={`w-16 h-16 rounded-lg overflow-hidden shrink-0 border-2 bg-slate-100 transition-all cursor-pointer ${currentImage === idx ? 'border-primary-500' : 'border-transparent hover:border-slate-200'}`}>
+                <img src={img?.url || img} alt="" className="w-full h-full object-cover" />
+              </button>
             ))}
           </div>
         </div>
@@ -206,12 +206,22 @@ const ProductDetail = () => {
           </div>
           <p className="text-slate-600 leading-relaxed text-sm">{product.description}</p>
           {sizes.length > 0 && (
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Size</label>
-              <div className="flex gap-2">{sizes.map(size => <button key={size} onClick={() => setSelectedSize(size)} className={`w-12 h-12 rounded-lg font-medium text-sm border-2 transition-all ${selectedSizeValue === size ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`}>{size}</button>)}</div>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Size</label>
+              <div className="flex flex-col gap-1.5">
+                {sizes.map(size => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`w-full rounded-lg font-medium text-sm border-transition-all ${selectedSizeValue === size ? 'border-primary-500 bg-primary-50 text-primary-800' : 'border-slate-200 text-slate-700 hover:border-slate-300'}`
+                  }>
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
           )}
-          <div>
+          <div className="space-y-2">
             <label className="block text-sm font-medium text-slate-700 mb-2">Quantity</label>
             <div className="flex items-center gap-3">
               <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden">
@@ -219,14 +229,14 @@ const ProductDetail = () => {
                 <span className="w-12 text-center font-semibold text-lg">{quantity}</span>
                 <button onClick={() => setQuantity(quantity + 1)} className="p-2.5 hover:bg-slate-50 transition-colors" disabled={quantity >= product.stockQuantity}><Plus className="w-4 h-4" /></button>
               </div>
-<span className={`text-sm ${availableStock > 0 ? 'text-emerald-600' : 'text-red-500'}`}>{availableStock > 0 ? `${availableStock} available` : 'Out of Stock'}</span>
-              </div>
+              <span className={`text-sm ${availableStock > 0 ? 'text-emerald-600' : 'text-red-500'}`}>{availableStock > 0 ? `${availableStock} available` : 'Out of Stock'}</span>
             </div>
-            <div className="flex gap-3 pt-2">
-              <button onClick={handleAddToCart} disabled={outOfStock} className="flex-1 btn-secondary flex items-center justify-center gap-2"><ShoppingCart className="w-5 h-5" /> {outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
-              <button onClick={handleBuyNow} disabled={outOfStock} className="flex-1 btn-primary">{outOfStock ? 'Out of Stock' : 'Buy Now'}</button>
-            </div>
-          <div className="grid grid-cols-3 gap-3 pt-5 border-t border-slate-200">
+          </div>
+          <div className="flex gap-3 pt-2">
+            <button onClick={handleAddToCart} disabled={outOfStock} className="flex-1 btn-secondary flex items-center justify-center gap-2"><ShoppingCart className="w-5 h-5" /> {outOfStock ? 'Out of Stock' : 'Add to Cart'}</button>
+            <button onClick={handleBuyNow} disabled={outOfStock} className="flex-1 btn-primary">{outOfStock ? 'Out of Stock' : 'Buy Now'}</button>
+          </div>
+          <div className="grid grid-cols-1 gap-3 pt-5 border-t border-slate-200">
             <div className="text-center p-3 bg-slate-50 rounded-lg"><Truck className="w-5 h-5 mx-auto text-primary-500 mb-1" /><p className="text-[11px] text-slate-600 font-medium">Free Delivery</p></div>
             <div className="text-center p-3 bg-slate-50 rounded-lg"><Shield className="w-5 h-5 mx-auto text-primary-500 mb-1" /><p className="text-[11px] text-slate-600 font-medium">Secure Payment</p></div>
             <div className="text-center p-3 bg-slate-50 rounded-lg"><RefreshCw className="w-5 h-5 mx-auto text-primary-500 mb-1" /><p className="text-[11px] text-slate-600 font-medium">7-Day Returns</p></div>
