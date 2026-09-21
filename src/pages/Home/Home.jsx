@@ -71,44 +71,7 @@ const Home = () => {
       fetchPriority="high"
       />
     </picture>
-    
-
-      {/* ====== NEW ARRIVALS ====== */}
-      <section className="py-16 sm:py-20 bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8 sm:mb-10">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-primary-500/10 text-primary-700 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
-                Fresh Drops
-              </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">New Arrivals</h2>
-            </div>
-            <div className="flex items-center gap-2">
-              <button onClick={() => scrollSlider(-1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button onClick={() => scrollSlider(1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-
-          <div ref={sliderRef} className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 snap-x snap-mandatory" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {newArrivalsLoading
-              ? [...Array(5)].map((_, i) => (
-                  <div key={i} className="shrink-0 w-55 sm:w-55 snap-start">
-                    <ProductCardSkeleton />
-                  </div>
-                ))
-              : (newArrivals || []).map(product => (
-                  <div key={product._id} className="shrink-0 w-55 sm:w-55 snap-start">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
-          </div>
-        </div>
-      </section>
-      </section>      {/* ====== CATEGORY NAVIGATION ====== */}
+    </section>      {/* ====== CATEGORY NAVIGATION ====== */}
       <section className="sticky top-16 sm:top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
@@ -195,6 +158,44 @@ const Home = () => {
         </div>
       </section>
 
+
+      {/* ====== NEW ARRIVALS ====== */}
+      <section className="py-16 sm:py-20 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8 sm:mb-10">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-primary-500/10 text-primary-700 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
+                Fresh Drops
+              </div>
+              <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">New Arrivals</h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <button onClick={() => scrollSlider(-1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button onClick={() => scrollSlider(1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
+          <div ref={sliderRef} className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 snap-x snap-mandatory" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            {newArrivalsLoading
+              ? [...Array(5)].map((_, i) => (
+                  <div key={i} className="shrink-0 w-55 sm:w-55 snap-start">
+                    <ProductCardSkeleton />
+                  </div>
+                ))
+              : (newArrivals || []).map(product => (
+                  <div key={product._id} className="shrink-0 w-55 sm:w-55 snap-start">
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+          </div>
+        </div>
+      </section>
+
+      
       {/* ====== BEST SELLERS ====== */}
       {featuredProducts && featuredProducts.length > 0 && (
         <section className="py-16 sm:py-20 bg-white">
