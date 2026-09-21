@@ -6,9 +6,6 @@ import FloatingWhatsApp from '../common/FloatingWhatsApp'
 const MainLayout = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <ScrollToTop />
-
-
       <Navbar />
       <main className="grow pt-16 sm:pt-20">
         <Outlet />

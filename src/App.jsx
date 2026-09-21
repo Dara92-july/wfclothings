@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { checkAuth } from './store/slices/authSlice'
 
 import SplashScreen from './components/common/SplashScreen'
+import ScrollToTop from './components/layout/ScrollToTop'
 
 // Layouts
 import MainLayout from './components/layout/MainLayout'
@@ -52,6 +53,10 @@ function App() {
 
   return (
     <>
+      {/* Mounted once for the whole app (public, protected and admin routes) so
+          every navigation - e.g. opening a product from a card - starts at the top. */}
+      <ScrollToTop />
+
       {showSplash && <SplashScreen onComplete={handleSplashComplete} />}
       <Routes>
       {/* Public Routes */}
