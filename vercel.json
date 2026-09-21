@@ -8,13 +8,7 @@
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/index.html",
-      "headers": [
-        {
-          "key": "X-Vercel-Scroll-Restoration",
-          "value": "true"
-        }
-      ]
+      "destination": "/index.html"
     }
   ]
 }
