@@ -14,7 +14,7 @@ const Home = () => {
 
   const { data: allProducts, isLoading, isError, refetch } = useQuery({
     queryKey: ['homeProducts'],
-    queryFn: () => productService.getProducts({ limit: 50 }).then(res => res.data.data),
+    queryFn: () => productService.getProducts({ limit: 50, sort: 'createdAt' }).then(res => res.data.data),
     retry: 2,
     staleTime: 30000
   })
