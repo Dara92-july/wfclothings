@@ -133,12 +133,13 @@ const Home = () => {
                   <div key={product._id} className="shrink-0 w-55 sm:w-55 snap-start">
                     <ProductCard product={product} />
                   </div>
-                ))
+                ))}
           </div>
         </div>
       </section>
 
       {/* ====== PRODUCTS GRID ====== */}
+      <section className="py-8 sm:py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-6 sm:mb-8">
             <div>
@@ -191,6 +192,8 @@ const Home = () => {
             </div>
           )}
         </div>
+      </section>
+
       {/* ====== BEST SELLERS ====== */}
       {featuredProducts && featuredProducts.length > 0 && (
         <section className="py-16 sm:py-20 bg-white">
