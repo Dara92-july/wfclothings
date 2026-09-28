@@ -133,10 +133,10 @@ const ProductImageCarousel = ({
           ? 'cursor-grab active:cursor-grabbing touch-pan-y select-none'
           : 'cursor-pointer'
       }`}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerCancel}
+      onPointerDown={canSwipe ? handlePointerDown : undefined}
+      onPointerMove={canSwipe ? handlePointerMove : undefined}
+      onPointerUp={canSwipe ? handlePointerUp : undefined}
+      onPointerCancel={canSwipe ? handlePointerCancel : undefined}
     >
       {/* Images */}
       {images.map((src, index) => (
