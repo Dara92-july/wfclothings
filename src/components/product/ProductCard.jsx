@@ -127,17 +127,18 @@ const ProductImageCarousel = ({
   }
 
   return (
-    <div
-      className={`absolute inset-0 overflow-hidden z-10 ${
-        canSwipe
-          ? 'cursor-grab active:cursor-grabbing touch-pan-y select-none'
-          : 'cursor-pointer'
-      }`}
-      onPointerDown={canSwipe ? handlePointerDown : undefined}
-      onPointerMove={canSwipe ? handlePointerMove : undefined}
-      onPointerUp={canSwipe ? handlePointerUp : undefined}
-      onPointerCancel={canSwipe ? handlePointerCancel : undefined}
-    >
+      <div
+    className={`absolute inset-0 overflow-hidden z-10 ${
+      canSwipe
+        ? 'cursor-grab active:cursor-grabbing touch-pan-y select-none'
+        : 'cursor-pointer'
+    }`}
+    onPointerDown={canSwipe ? handlePointerDown : undefined}
+    onPointerMove={canSwipe ? handlePointerMove : undefined}
+    onPointerUp={canSwipe ? handlePointerUp : undefined}
+    onPointerCancel={canSwipe ? handlePointerCancel : undefined}
+    onClick={!canSwipe ? onImageClick : undefined}
+  >
       {/* Images */}
       {images.map((src, index) => (
         <img
