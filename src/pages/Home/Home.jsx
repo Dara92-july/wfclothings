@@ -179,7 +179,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div ref={sliderRef} className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 snap-x snap-mandatory" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div ref={sliderRef} className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8">
             {newArrivalsLoading
               ? [...Array(5)].map((_, i) => (
                   <div key={i} className="shrink-0 w-55 sm:w-55 snap-start">
