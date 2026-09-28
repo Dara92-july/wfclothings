@@ -53,7 +53,7 @@ const Home = () => {
     <div>
       
       {/* ====== HERO BANNER ====== */}
-    <section className="relative h-[500px] sm:h-[550px] lg:h-[600px] overflow-hidden bg-black">
+    <section className="relative h-125 sm:h-137.5 lg:h-150 overflow-hidden bg-black">
       <picture className="block w-full h-full">
       {/* Mobile */}
       <source

@@ -41,19 +41,20 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
   }
 
   const handlePointerUp = (event) => {
-    if (!dragStartX.current || !canSwipe) return
-    dragStartX.current = null
-    const delta = currentX.current - dragStartX.current
-    dragStartX.current = null
+  if (dragStartX.current === null || !canSwipe) return
 
-    if (isDragging.current) {
-      const nextIndex = getSwipedIndex(activeIndex, delta, total)
-      goTo(nextIndex)
-    } else {
-      goTo(activeIndex)
-    }
-    isDragging.current = false
+  const delta = currentX.current - dragStartX.current
+  dragStartX.current = null
+
+  if (isDragging.current) {
+    const nextIndex = getSwipedIndex(activeIndex, delta, total)
+    goTo(nextIndex)
+  } else {
+    goTo(activeIndex)
   }
+
+  isDragging.current = false
+}
 
   const handleTouchStart = (event) => {
     if (!canSwipe) return
@@ -92,16 +93,18 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
 
   return (
     <div
-      className={`relative overflow-hidden ${canSwipe ? 'cursor-grab active:cursor-grabbing' : ''}`}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerLeave={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
+    className={`relative w-full h-full overflow-hidden ${
+      canSwipe ? 'cursor-grab active:cursor-grabbing' : ''
+    }`}
+    onPointerDown={handlePointerDown}
+    onPointerMove={handlePointerMove}
+    onPointerUp={handlePointerUp}
+    onPointerLeave={handlePointerUp}
+    onPointerCancel={handlePointerUp}
+    onTouchStart={handleTouchStart}
+    onTouchMove={handleTouchMove}
+    onTouchEnd={handleTouchEnd}
+  >
       {images.map((src, index) => (
         <img
           key={`${index}`}
@@ -122,7 +125,7 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
             type="button"
             onClick={() => previousImage()}
             aria-label="Previous image"
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/80 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-110 active:scale-95 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/80 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm  duration-200 hover:scale-110 active:scale-95 opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -130,7 +133,7 @@ const ProductImageCarousel = ({ images, activeIndex, onChange, productName, onIm
             type="button"
             onClick={() => nextImage()}
             aria-label="Next image"
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/80 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm transition-transform duration-200 hover:scale-110 active:scale-95 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-white/80 text-slate-800 shadow-md ring-1 ring-slate-900/10 backdrop-blur-sm duration-200 hover:scale-110 active:scale-95 opacity-0 group-hover:opacity-100 transition-opacity"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
