@@ -64,7 +64,7 @@ const Navbar = () => {
                 </button>
                 {showCatDropdown && (
                   <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 overflow-hidden">
-                    <Link to="/products" onClick={() => setShowCatDropdown(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-primary-500 hover:bg-primary-50 transition-colors">All Products</Link>
+                    <Link to="/products?sort=name" onClick={() => setShowCatDropdown(false)} className="block px-4 py-2.5 text-sm font-medium text-slate-700 hover:text-primary-500 hover:bg-primary-50 transition-colors">All Products</Link>
                     <div className="border-t border-gray-50 mx-4 my-1" />
                     {categories.map(cat => (
                       <Link key={cat._id} to={`/products?category=${encodeURIComponent(cat.name)}`} onClick={() => setShowCatDropdown(false)} className="block px-4 py-2.5 text-sm text-slate-600 hover:text-primary-500 hover:bg-primary-50 transition-colors">{cat.name}</Link>
