@@ -1,7 +1,12 @@
 import { useState, useRef } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { ArrowRight, ChevronLeft, ChevronRight, Star } from 'lucide-react'
+import {
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react'
+
 import productService from '../../services/product.service'
 import categoryService from '../../services/category.service'
 import ProductCard from '../../components/product/ProductCard'
@@ -12,69 +17,139 @@ const Home = () => {
   const [activeCategory, setActiveCategory] = useState('all')
   const sliderRef = useRef(null)
 
-  const { data: allProducts, isLoading, isError, refetch } = useQuery({
+  // =========================
+  // ALL PRODUCTS
+  // =========================
+  const {
+    data: allProducts,
+    isLoading,
+    isError,
+    refetch,
+  } = useQuery({
     queryKey: ['homeProducts'],
-    queryFn: () => productService.getProducts({ limit: 50, sort: 'createdAt' }).then(res => res.data.data),
+    queryFn: () =>
+      productService
+        .getProducts({
+          limit: 50,
+          sort: 'createdAt',
+        })
+        .then((res) => res.data.data),
     retry: 2,
-    staleTime: 30000
+    staleTime: 30000,
   })
 
+  // =========================
+  // CATEGORIES
+  // =========================
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],
-    queryFn: () => categoryService.getCategories().then(res => res.data.data),
+    queryFn: () =>
+      categoryService
+        .getCategories()
+        .then((res) => res.data.data),
     retry: 2,
-    staleTime: 30000
+    staleTime: 30000,
   })
 
+  // =========================
+  // FEATURED PRODUCTS
+  // =========================
   const { data: featuredProducts } = useQuery({
     queryKey: ['featuredProducts'],
-    queryFn: () => productService.getFeatured().then(res => res.data.data)
+    queryFn: () =>
+      productService
+        .getFeatured()
+        .then((res) => res.data.data),
   })
 
-  const { data: newArrivals, isLoading: newArrivalsLoading } = useQuery({
+  // =========================
+  // NEW ARRIVALS
+  // =========================
+  const {
+    data: newArrivals,
+    isLoading: newArrivalsLoading,
+  } = useQuery({
     queryKey: ['newArrivals'],
-    queryFn: () => productService.getProducts({ limit: 10, sort: '-createdAt' }).then(res => res.data.data)
+    queryFn: () =>
+      productService
+        .getProducts({
+          limit: 10,
+          sort: '-createdAt',
+        })
+        .then((res) => res.data.data),
   })
 
+  // =========================
+  // DATA
+  // =========================
   const categories = categoriesData || []
   const products = allProducts || []
-  const displayProducts = activeCategory === 'all' ? products : products.filter(p =>
-    p.category?._id === activeCategory || p.category === activeCategory
-  )
 
-  const scrollSlider = (dir) => {
+  // =========================
+  // FILTER PRODUCTS
+  // =========================
+  const displayProducts =
+    activeCategory === 'all'
+      ? products
+      : products.filter(
+          (product) =>
+            product.category?._id === activeCategory ||
+            product.category === activeCategory
+        )
+
+  // =========================
+  // NEW ARRIVALS SLIDER
+  // =========================
+  const scrollSlider = (direction) => {
     if (sliderRef.current) {
-      const scrollAmount = sliderRef.current.clientWidth * 0.8
-      sliderRef.current.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' })
+      const scrollAmount =
+        sliderRef.current.clientWidth * 0.8
+
+      sliderRef.current.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth',
+      })
     }
   }
 
   return (
     <div>
-      
-      {/* ====== HERO BANNER ====== */}
-    <section className="relative h-125 sm:h-137.5 lg:h-150 overflow-hidden bg-black">
-      <picture className="block w-full h-full">
-      {/* Mobile */}
-      <source
-      media="(max-width: 640px)"
-      srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/v1789658271/Gemini_Generated_Image_h782krh782krh782_zrzbnm.jpg"
-      />
+      {/* =========================================
+          HERO BANNER
+      ========================================= */}
+      <section className="relative h-[31.25rem] sm:h-[34.375rem] lg:h-[37.5rem] overflow-hidden bg-black">
+        <picture className="block w-full h-full">
+          {/* Mobile */}
+          <source
+            media="(max-width: 640px)"
+            srcSet="https://res.cloudinary.com/dzo14hk18/image/upload/v1789658271/Gemini_Generated_Image_h782krh782krh782_zrzbnm.jpg"
+          />
 
-    {/* Desktop / Tablet */}
-      <img
-      src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789655838/hero_big_ko4pwm.jpg"
-      alt="Way Forward"
-      className="w-full h-full object-cover object-center"
-      loading="eager"
-      decoding="async"
-      fetchPriority="high"
-      />
-    </picture>
-    </section>      {/* ====== CATEGORY NAVIGATION ====== */}
+          {/* Desktop / Tablet */}
+          <img
+            src="https://res.cloudinary.com/dzo14hk18/image/upload/f_auto,q_auto,w_1920/v1789655838/hero_big_ko4pwm.jpg"
+            alt="Way Forward"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
+      </section>
+
+      {/* =========================================
+          CATEGORY NAVIGATION
+      ========================================= */}
       <section className="sticky top-16 sm:top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          <div
+            className="flex items-center gap-2 py-4 overflow-x-auto scrollbar-hide"
+            style={{
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+            }}
+          >
+            {/* ALL */}
             <button
               onClick={() => setActiveCategory('all')}
               className={`shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
@@ -85,43 +160,69 @@ const Home = () => {
             >
               ALL
             </button>
-            {categories.map(cat => (
+
+            {/* CATEGORIES */}
+            {categories.map((category) => (
               <button
-                key={cat._id}
-                onClick={() => setActiveCategory(cat._id)}
+                key={category._id}
+                onClick={() =>
+                  setActiveCategory(category._id)
+                }
                 className={`shrink-0 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                  activeCategory === cat._id
+                  activeCategory === category._id
                     ? 'bg-primary-500 text-white shadow-md shadow-primary-500/20'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                 }`}
               >
-                {cat.name}
+                {category.name}
               </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ====== PRODUCTS GRID ====== */}
+      {/* =========================================
+          PRODUCTS GRID
+      ========================================= */}
       <section className="py-8 sm:py-12 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
           <div className="flex items-center justify-between mb-6 sm:mb-8">
             <div>
               <h2 className="font-display text-xl sm:text-2xl font-bold text-slate-900">
-                {activeCategory === 'all' ? 'All Products' : categories.find(c => c._id === activeCategory)?.name || 'Products'}
+                {activeCategory === 'all'
+                  ? 'All Products'
+                  : categories.find(
+                      (category) =>
+                        category._id === activeCategory
+                    )?.name || 'Products'}
               </h2>
-              <p className="text-sm text-slate-400 mt-0.5">{isLoading ? 'Loading…' : `${displayProducts.length} items`}</p>
+
+              <p className="text-sm text-slate-400 mt-0.5">
+                {isLoading
+                  ? 'Loading…'
+                  : `${displayProducts.length} items`}
+              </p>
             </div>
-            <Link to="/products" className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors inline-flex items-center gap-1">
-              View All <ArrowRight className="w-3.5 h-3.5" />
+
+            <Link
+              to="/products"
+              className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors inline-flex items-center gap-1"
+            >
+              View All
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
+          {/* Loading */}
           {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-              {[...Array(8)].map((_, i) => <ProductCardSkeleton key={i} />)}
+              {[...Array(8)].map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
             </div>
           ) : isError ? (
+            /* Error */
             <ErrorState
               title="Couldn't load products"
               message="Please check your connection and try again."
@@ -129,114 +230,236 @@ const Home = () => {
               onAction={refetch}
             />
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5" key={activeCategory}>
+            /* Products */
+            <div
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5"
+              key={activeCategory}
+            >
               {displayProducts.length > 0 ? (
-                displayProducts.slice(0, 8).map(product => (
-                  <div key={product._id} className="animate-fadeIn">
-                    <ProductCard product={product} />
-                  </div>
-                ))
+                displayProducts
+                  .slice(0, 8)
+                  .map((product) => (
+                    <div
+                      key={product._id}
+                      className="animate-fadeIn"
+                    >
+                      <ProductCard product={product} />
+                    </div>
+                  ))
               ) : (
+                /* Empty State */
                 <div className="col-span-full text-center py-16">
                   <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl font-bold text-slate-300">WF</span>
+                    <span className="text-2xl font-bold text-slate-300">
+                      WF
+                    </span>
                   </div>
-                  <p className="text-slate-500 font-medium">No products in this category yet</p>
-                  <p className="text-sm text-slate-400 mt-1">Check back soon for new drops</p>
+
+                  <p className="text-slate-500 font-medium">
+                    No products in this category yet
+                  </p>
+
+                  <p className="text-sm text-slate-400 mt-1">
+                    Check back soon for new drops
+                  </p>
                 </div>
               )}
             </div>
           )}
 
+          {/* View All */}
           {displayProducts.length > 8 && (
             <div className="text-center mt-8">
-              <Link to={`/products${activeCategory !== 'all' ? `?category=${encodeURIComponent(categories.find(c => c._id === activeCategory)?.name || '')}` : ''}`} className="btn-secondary inline-flex items-center gap-2">
-                View All {displayProducts.length} Products <ArrowRight className="w-4 h-4" />
+              <Link
+                to={`/products${
+                  activeCategory !== 'all'
+                    ? `?category=${encodeURIComponent(
+                        categories.find(
+                          (category) =>
+                            category._id === activeCategory
+                        )?.name || ''
+                      )}`
+                    : ''
+                }`}
+                className="btn-secondary inline-flex items-center gap-2"
+              >
+                View All {displayProducts.length} Products
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           )}
         </div>
       </section>
 
-
-      {/* ====== NEW ARRIVALS ====== */}
+      {/* =========================================
+          NEW ARRIVALS
+      ========================================= */}
       <section className="py-16 sm:py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Section Header */}
           <div className="flex items-center justify-between mb-8 sm:mb-10">
             <div>
               <div className="inline-flex items-center gap-2 bg-primary-500/10 text-primary-700 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
                 Fresh Drops
               </div>
-              <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">New Arrivals</h2>
+
+              <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">
+                New Arrivals
+              </h2>
             </div>
+
+            {/* Slider Buttons */}
             <div className="flex items-center gap-2">
-              <button onClick={() => scrollSlider(-1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
+              <button
+                type="button"
+                onClick={() => scrollSlider(-1)}
+                aria-label="Previous products"
+                className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm"
+              >
                 <ChevronLeft className="w-5 h-5" />
               </button>
-              <button onClick={() => scrollSlider(1)} className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm">
+
+              <button
+                type="button"
+                onClick={() => scrollSlider(1)}
+                aria-label="Next products"
+                className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-primary-500 hover:text-white hover:border-primary-500 transition-all shadow-sm"
+              >
                 <ChevronRight className="w-5 h-5" />
               </button>
             </div>
           </div>
 
+          {/* Products Slider */}
           <div
             ref={sliderRef}
-            className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 snap-x snap-mandatory touch-pan-x"
+            className="flex gap-4 sm:gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 snap-x snap-mandatory touch-pan-x overscroll-x-contain"
             style={{
-            WebkitOverflowScrolling: 'touch',
+              WebkitOverflowScrolling: 'touch',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
             }}
-            >
-            {newArrivalsLoading
-              ? [...Array(5)].map((_, i) => (
-                  <div key={i} className="shrink-0 w-55 sm:w-55 snap-start">
-                    <ProductCardSkeleton />
-                  </div>
-                ))
-              : (newArrivals || []).map(product => (
-                  <div key={product._id} className="shrink-0 w-55 sm:w-55 snap-start">
-                    <ProductCard product={product} />
-                  </div>
-                ))}
+          >
+            {newArrivalsLoading ? (
+              /* Loading Skeletons */
+              [...Array(5)].map((_, index) => (
+                <div
+                  key={index}
+                  className="shrink-0 w-52 sm:w-60 lg:w-64 snap-start"
+                >
+                  <ProductCardSkeleton />
+                </div>
+              ))
+            ) : (newArrivals || []).length > 0 ? (
+              /* Products */
+              newArrivals.map((product) => (
+                <div
+                  key={product._id}
+                  className="shrink-0 w-52 sm:w-60 lg:w-64 snap-start"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))
+            ) : (
+              /* Empty State */
+              <div className="w-full py-12 text-center">
+                <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mx-auto mb-4">
+                  <span className="text-2xl font-bold text-slate-300">
+                    WF
+                  </span>
+                </div>
+
+                <p className="text-slate-500 font-medium">
+                  No new arrivals yet
+                </p>
+
+                <p className="text-sm text-slate-400 mt-1">
+                  Check back soon for new drops
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      
-      {/* ====== BEST SELLERS ====== */}
-      {featuredProducts && featuredProducts.length > 0 && (
-        <section className="py-16 sm:py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between mb-8 sm:mb-10">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
-                  Top Rated
+      {/* =========================================
+          BEST SELLERS
+      ========================================= */}
+      {featuredProducts &&
+        featuredProducts.length > 0 && (
+          <section className="py-16 sm:py-20 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8 sm:mb-10">
+                <div>
+                  <div className="inline-flex items-center gap-2 bg-amber-50 text-amber-700 rounded-full px-3 py-1 text-[11px] font-semibold mb-3">
+                    Top Rated
+                  </div>
+
+                  <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">
+                    Best Sellers
+                  </h2>
                 </div>
-                <h2 className="font-display text-2xl sm:text-3xl font-black text-slate-900">Best Sellers</h2>
+
+                <Link
+                  to="/products?featured=true"
+                  className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors inline-flex items-center gap-1"
+                >
+                  View All
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
-              <Link to="/products?featured=true" className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors inline-flex items-center gap-1">
-                View All <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
-              {featuredProducts.slice(0, 8).map(product => (
-                <ProductCard key={product._id} product={product} />
-              ))}
+              {/* Products */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+                {featuredProducts
+                  .slice(0, 8)
+                  .map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      product={product}
+                    />
+                  ))}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )}
 
-      {/* ====== CTA ====== */}
+      {/* =========================================
+          CTA
+      ========================================= */}
       <section className="py-16 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="max-w-lg mx-auto">
-            <h2 className="font-display text-3xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tighter">MEMBERS ONLY</h2>
-            <p className="text-slate-500 mb-8 max-w-md mx-auto">More than a store. Become part of the Way Forward movement. Early access, exclusive drops, member pricing.</p>
+
+            <h2 className="font-display text-3xl sm:text-4xl font-black text-slate-900 mb-3 tracking-tighter">
+              MEMBERS ONLY
+            </h2>
+
+            <p className="text-slate-500 mb-8 max-w-md mx-auto">
+              More than a store. Become part of the Way Forward movement.
+              Early access, exclusive drops, member pricing.
+            </p>
+
             <div className="flex flex-wrap justify-center gap-4">
-              <Link to="/register" className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-3.5 rounded-full text-sm hover:bg-primary-500 transition-all shadow-xl">Join the Movement <ArrowRight className="w-4 h-4" /></Link>
-              <Link to="/products" className="inline-flex items-center gap-2 border-2 border-slate-200 text-slate-700 font-semibold px-8 py-3.5 rounded-full text-sm hover:border-primary-500 hover:text-primary-500 transition-all">Browse Collection</Link>
+              <Link
+                to="/register"
+                className="inline-flex items-center gap-2 bg-slate-900 text-white font-bold px-8 py-3.5 rounded-full text-sm hover:bg-primary-500 transition-all shadow-xl"
+              >
+                Join the Movement
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+
+              <Link
+                to="/products"
+                className="inline-flex items-center gap-2 border-2 border-slate-200 text-slate-700 font-semibold px-8 py-3.5 rounded-full text-sm hover:border-primary-500 hover:text-primary-500 transition-all"
+              >
+                Browse Collection
+              </Link>
             </div>
+
           </div>
         </div>
       </section>
